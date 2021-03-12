@@ -59,6 +59,7 @@ def marshal(data, fields, envelope=None, skip_none=False, mask=None, ordered=Fal
 
     if has_wildcards:
         # ugly local import to avoid dependency loop
+        from .fields import Boolean
         from .fields import Wildcard
 
         items = []
@@ -88,7 +89,7 @@ def marshal(data, fields, envelope=None, skip_none=False, mask=None, ordered=Fal
                     _append(key, value)
                     while True:
                         value = field.output(dkey, data, ordered=ordered)
-                        if value is None or value == field.container.format(
+                        if value is None or not isinstance(field.container, Boolean) and value == field.container.format(
                             field.default
                         ):
                             break

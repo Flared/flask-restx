@@ -96,6 +96,15 @@ class MarshallingTest(object):
         output = marshal(marshal_dict, model, skip_none=True)
         assert output == {"baz": "biz"}
 
+    def test_marshal_wildcard_nested_booleans(self):
+        wild = fields.Wildcard(fields.Boolean)
+        model = OrderedDict([("*", wild)])
+        marshal_dict = OrderedDict(
+            [("foo", True), ("bar", False)]
+        )
+        output = marshal(marshal_dict, model)
+        assert output == {"foo": True, "bar": False}
+
     def test_marshal_decorator(self):
         model = OrderedDict([("foo", fields.Raw)])
 
